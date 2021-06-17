@@ -1,0 +1,4 @@
+name: Translated
+version: ${project.version}
+main: net.ureshi.translated.Translated
+api-version: 1.16
