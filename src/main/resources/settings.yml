@@ -1,0 +1,21 @@
+#Your DeepL authorisation key which can be found here: https://www.deepl.com/pro-account
+Auth Key: ""
+
+#These are different presets you can edit in order to fully customize the way in which messages are translated
+
+#Sets whether the translation engine should first split the input into sentences, Enabled by default
+#Possible options: "0" - no splitting at all, whole input is treated as one sentence | "1" - (default) - splits on interpunction and on newlines | "nonewlines" - splits on interpunction only, ignoring newlines
+Split Sentences: "1"
+
+#Sets whether the translation engine should respect the original formatting, even if it would usually correct some aspects
+#Possible options: "0" - (default) - Keeps format | "1" - (Recommended) - Changes format to be correct in incorrect
+Preserve Formatting: "0"
+
+#Log chat in a set language. Can be helpful for searching on who said what, can take up space if not needed
+Log Chat:
+  #Possible options: "True" - Logs chat in the set language below | "False" - (default) - does not log chat
+  Enabled: "False"
+
+  #Sets the language to log chat in if enabled above. Possible options are shorthand languages here, under source_lang: https://www.deepl.com/docs-api/translating-text/request/
+   Lang: "EN"
+

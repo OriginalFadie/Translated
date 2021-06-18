@@ -1,7 +1,5 @@
 package net.ureshi.translated;
 
-import net.ureshi.translated.configSetup.SetupEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,26 +10,21 @@ import java.io.IOException;
 
 public class Translated extends JavaPlugin {
 
-    private File customConfigFile;
     private FileConfiguration customConfig;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         createCustomConfig();
-        Bukkit.getPluginManager().callEvent(new SetupEvent());
     }
 
-    public FileConfiguration getCustomConfig() {
-        return this.customConfig;
-
-    }
+    public FileConfiguration getCustomConfig() { return this.customConfig; }
 
     private void createCustomConfig() {
-        customConfigFile = new File(getDataFolder(), "src/settings.yml");
+        File customConfigFile = new File(getDataFolder(), "settings.yml");
         if (!customConfigFile.exists()) {
-            customConfigFile.getParentFile().mkdirs();
-            saveResource("src/settings.yml", false);
+            customConfigFile.getParentFile().mkdir();
+            saveResource("settings.yml", false);
         }
 
         customConfig = new YamlConfiguration();
