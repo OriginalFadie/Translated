@@ -7,12 +7,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class SetupEvent extends Event {
 
+    Translated translated = new Translated();
 
     public SetupEvent() {
 
-        Translated.getCustomConfig().set("Auth Key:", "");
-        Translated.getCustomConfig().set("Split Sentences", "default");
-
+        translated.getCustomConfig().set("Auth Key:", "");
+        translated.getCustomConfig().set("Split Sentences", "True");
+        translated.getCustomConfig().set("Preserve Formatting", "False");
+        translated.getCustomConfig().set("Formality", "default");
+        translated.saveConfig();
     }
 
 

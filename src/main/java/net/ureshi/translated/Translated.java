@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 
-public final class Translated extends JavaPlugin {
+public class Translated extends JavaPlugin {
 
     private File customConfigFile;
     private FileConfiguration customConfig;
@@ -22,8 +22,9 @@ public final class Translated extends JavaPlugin {
         Bukkit.getPluginManager().callEvent(new SetupEvent());
     }
 
-    public static FileConfiguration getCustomConfig() {
+    public FileConfiguration getCustomConfig() {
         return this.customConfig;
+
     }
 
     private void createCustomConfig() {
