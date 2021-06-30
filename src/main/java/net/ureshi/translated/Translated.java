@@ -1,7 +1,5 @@
 package net.ureshi.translated;
 
-import net.ureshi.translated.deepl.request.Free;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -38,11 +36,7 @@ public class Translated extends JavaPlugin {
         instance = this;
         createCustomConfig();
         read();
-        try {
-            Bukkit.getPluginManager().callEvent(new Free(this));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public static Translated getInstance() {
