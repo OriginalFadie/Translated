@@ -1,11 +1,9 @@
 package net.ureshi.translated.deepl.request;
 
-import net.ureshi.translated.ChatListener.ChatEventFree;
 import net.ureshi.translated.Translated;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,19 +15,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import static net.ureshi.translated.Translated.translatedtext;
+
 public class Free extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
 
-    public Free(Translated translated) throws IOException {
+    public Free() throws IOException {
+        //Creates a URL connection to the free DeepL api
         URL url = new URL("https://api-free.deepl.com/v2/translate");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
         http.setRequestMethod("POST");
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + translated.auth + "&" + translated.originaltext + "&target_lang=DE";
+        String data = "auth_key=" + Translated.auth + "&" + Translated.originaltext + "&target_lang=DE";
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -46,13 +47,13 @@ public class Free extends Event {
                     response.append(line);
                 }
             }
+
             String[] arrSplit = response.toString().split(":");
             String temp1 = arrSplit[3];
             String temp2 = temp1.substring(0, temp1.length()-4);
-            String translatedtext = temp2.replaceFirst("\"", "");
-            translated.translatedtext = translatedtext;
-            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Free Translate called!");
+            translatedtext = temp2.replaceFirst("\"", "");
             Bukkit.getConsoleSender().sendMessage(""+translatedtext);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Translate called!");
 
         }
 
@@ -65,7 +66,5 @@ public class Free extends Event {
     public @NotNull HandlerList getHandlers() {
         return HANDLERS;
     }
-
-
 
 }
