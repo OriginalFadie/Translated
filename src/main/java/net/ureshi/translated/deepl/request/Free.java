@@ -66,5 +66,4 @@ public class Free extends Event {
     public @NotNull HandlerList getHandlers() {
         return HANDLERS;
     }
-
 }

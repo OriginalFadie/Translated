@@ -17,8 +17,7 @@ import java.io.IOException;
 public class Translated extends JavaPlugin {
 
     private FileConfiguration customConfig;
-    private static Translated instance;
-    private String lastchar;
+    public static String lastchar;
     public static String auth;
     public String ss;
     public String pf;
@@ -42,7 +41,6 @@ public class Translated extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        instance = this;
         createCustomConfig();
         read();
         if(lastchar.equals(":fx")){
@@ -53,10 +51,6 @@ public class Translated extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Event Registered!");
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Enabled!");
-    }
-
-    public static Translated getInstance() {
-        return instance;
     }
 
     public FileConfiguration getCustomConfig() { return this.customConfig; }
@@ -83,11 +77,13 @@ public class Translated extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Disabled!");
     }
 
-    public void Please() throws IOException {
-        if(lastchar.equals(":fx")){
+    public static void Please() throws IOException {
+        if(Translated.lastchar.equals(":fx")){
             Bukkit.getPluginManager().callEvent(new Free());
+            Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Free Called!");
         }else{
             Bukkit.getPluginManager().callEvent(new Pro());
+            Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Pro Called!");
         }
     }
 }

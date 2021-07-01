@@ -5,22 +5,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
 
 import java.io.IOException;
 
 import static net.ureshi.translated.Translated.originaltext;
 import static net.ureshi.translated.Translated.translatedtext;
 
-@SuppressWarnings("deprecation")
 public class ChatEventFree implements Listener {
 
-    Translated.
-
+    @SuppressWarnings("deprecation")
     @EventHandler
-    public void PlayerChat(PlayerChatEvent e) throws IOException {
+    public void PlayerChat(AsyncPlayerChatEvent e) throws IOException {
         originaltext = e.getMessage();
-        translated.Please();
+        Bukkit.getConsoleSender().sendMessage(""+originaltext);
+        Translated.Please();
         e.setMessage(translatedtext);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Free Chat Called!");
     }
