@@ -1,19 +1,19 @@
 package net.ureshi.translated.ChatListener;
 
-import net.ureshi.translated.deepl.request.Free;
+import net.ureshi.translated.Translated;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 @SuppressWarnings("deprecation")
 public class ChatEventFree implements Listener {
-    public String originaltext;
 
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void PlayerChat(AsyncPlayerChatEvent e, Free free) {
-        originaltext = e.getMessage();
-        e.setMessage(free.translatedtext);
+    @EventHandler
+    public void PlayerChat(PlayerChatEvent e, Translated translated) {
+        translated.originaltext = e.getMessage();
+        e.setMessage(translated.translatedtext);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Free Chat Called!");
     }
 }

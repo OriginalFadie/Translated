@@ -3,7 +3,9 @@ package net.ureshi.translated.deepl.request;
 import net.ureshi.translated.ChatListener.ChatEventFree;
 import net.ureshi.translated.Translated;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,17 +20,16 @@ import java.nio.charset.StandardCharsets;
 public class Free extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    public String translatedtext;
-    private static Free instance;
 
-    public Free(Translated translated, ChatEventFree chatevent) throws IOException {
+
+    public Free(Translated translated) throws IOException {
         URL url = new URL("https://api-free.deepl.com/v2/translate");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
         http.setRequestMethod("POST");
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + translated.auth + "&" + chatevent.originaltext + "&target_lang=DE";
+        String data = "auth_key=" + translated.auth + "&" + translated.originaltext + "&target_lang=DE";
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -48,14 +49,15 @@ public class Free extends Event {
             String[] arrSplit = response.toString().split(":");
             String temp1 = arrSplit[3];
             String temp2 = temp1.substring(0, temp1.length()-4);
-            translatedtext = temp2.replaceFirst("\"", "");
+            String translatedtext = temp2.replaceFirst("\"", "");
+            translated.translatedtext = translatedtext;
+            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Free Translate called!");
             Bukkit.getConsoleSender().sendMessage(""+translatedtext);
-        }
 
+        }
 
         System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
         http.disconnect();
-
 
     }
 
@@ -63,5 +65,7 @@ public class Free extends Event {
     public @NotNull HandlerList getHandlers() {
         return HANDLERS;
     }
+
+
 
 }

@@ -1,16 +1,18 @@
 package net.ureshi.translated.ChatListener;
 
-import net.ureshi.translated.deepl.request.Pro;
+import net.ureshi.translated.Translated;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.*;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 @SuppressWarnings("deprecation")
 public class ChatEventPro implements Listener {
-    public String originaltext;
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void PlayerChat(AsyncPlayerChatEvent e, Pro pro) {
-        originaltext = e.getMessage();
-        e.setMessage(pro.translatedtext);
+    public void PlayerChat(AsyncPlayerChatEvent e, Translated translated) {
+        translated.originaltext = e.getMessage();
+        e.setMessage(translated.translatedtext);
+        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Chat Called!");
     }
 }

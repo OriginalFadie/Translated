@@ -3,6 +3,7 @@ package net.ureshi.translated.deepl.request;
 import net.ureshi.translated.ChatListener.ChatEventFree;
 import net.ureshi.translated.Translated;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,7 @@ public class Pro extends Event {
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + translated.auth + "&" + chatevent.originaltext + "&target_lang=DE";
+        String data = "auth_key=" + translated.auth + "&" + translated.originaltext + "&target_lang=DE";
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -49,6 +50,7 @@ public class Pro extends Event {
             String temp2 = temp1.substring(0, temp1.length()-4);
             translatedtext = temp2.replaceFirst("\"", "");
             Bukkit.getConsoleSender().sendMessage(""+translatedtext);
+            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Translate called!");
         }
 
 
