@@ -1,8 +1,6 @@
 package net.ureshi.translated.deepl.request;
 
-import net.ureshi.translated.Translated;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static net.ureshi.translated.Translated.translatedtext;
+import static net.ureshi.translated.Translated.*;
 
 public class Free extends Event {
 
@@ -30,7 +28,7 @@ public class Free extends Event {
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + Translated.auth + "&" + Translated.originaltext + "&target_lang=DE";
+        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=JA" + format + split + format;
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -51,12 +49,11 @@ public class Free extends Event {
             String[] arrSplit = response.toString().split(":");
             String temp1 = arrSplit[3];
             String temp2 = temp1.substring(0, temp1.length()-4);
-            translatedtext = temp2.replaceFirst("\"", "");
-            Bukkit.getConsoleSender().sendMessage(""+translatedtext);
-            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Translate called!");
+            String temp3 = temp2.replaceFirst("\"", "");
+            byte[] temp4 = temp3.getBytes(StandardCharsets.UTF_8);
+            translatedText = new String(temp4, StandardCharsets.UTF_8);
 
         }
-
         System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
         http.disconnect();
 

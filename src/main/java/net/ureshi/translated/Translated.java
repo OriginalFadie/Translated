@@ -1,9 +1,6 @@
 package net.ureshi.translated;
 
 import net.ureshi.translated.ChatListener.ChatEventFree;
-import net.ureshi.translated.ChatListener.ChatEventPro;
-import net.ureshi.translated.deepl.request.Free;
-import net.ureshi.translated.deepl.request.Pro;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -17,25 +14,101 @@ import java.io.IOException;
 public class Translated extends JavaPlugin {
 
     private FileConfiguration customConfig;
-    public static String lastchar;
+    public static String lastChar;
     public static String auth;
     public String ss;
     public String pf;
-    public String en;
-    public String la;
+    public static String  en;
     public String li;
-    public static String originaltext;
-    public static String translatedtext;
+    public String fo;
+    public static String originalText;
+    public static String translatedText;
+    public static String split;
+    public static String format;
+    public static String formal;
+    public static String storage;
+    public static String host;
+    public static String port;
+    public static String database;
+    public static String username;
+    public static String password;
+
 
     public void read() {
         auth = getCustomConfig().getString("authkey");
         ss = getCustomConfig().getString("options.splitsentences");
         pf = getCustomConfig().getString("options.preserveformatting");
         en = getCustomConfig().getString("options.logchat.enabled");
-        la = getCustomConfig().getString("options.logchat.lang");
         li = getCustomConfig().getString("options.limiter.limit");
-        lastchar = auth.substring(auth.length()-3);
+        fo = getCustomConfig().getString("options.formality");
+        lastChar = auth.substring(auth.length()-3);
+        storage = getCustomConfig().getString("options.storage");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Read Event Called!");
+    }
+
+    public void database() {
+        host = getCustomConfig().getString("options.storage.host");
+        port = getCustomConfig().getString("options.storage.port");
+        database = getCustomConfig().getString("options.storage.database");
+        username = getCustomConfig().getString("options.storage.username");
+        password = getCustomConfig().getString("options.storage.password");
+    }
+
+
+    public void parameters() {
+
+        switch (ss) {
+
+            case "0":
+                split = "&split_sentences=0";
+                break;
+
+            case "1":
+                split = "";
+                break;
+
+            case "nonewlines":
+                split = "&split_sentences=nonewlines";
+                break;
+
+            default:
+                split = "";
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Split Sentenaces formatting error, reverting to default");
+        }
+
+
+        switch (pf) {
+
+            case "0":
+                format = "";
+                break;
+
+            case "1":
+                format = "&preserve_formatting=1";
+                break;
+
+            default:
+                format = "";
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Preserve Formatting formatting error, reverting to default");
+        }
+
+        switch (fo) {
+            case "default":
+                formal = "";
+                break;
+
+            case "0":
+                formal = "&formality=less";
+                break;
+
+            case "1":
+                formal = "&formality=more";
+                break;
+
+            default:
+                formal = "";
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Formality formatting error, reverting to default");
+        }
     }
 
     @Override
@@ -43,13 +116,9 @@ public class Translated extends JavaPlugin {
         // Plugin startup logic
         createCustomConfig();
         read();
-        if(lastchar.equals(":fx")){
-            Bukkit.getPluginManager().registerEvents(new ChatEventFree(), this);
-            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Free Event Registered!");
-        }else{
-            Bukkit.getPluginManager().registerEvents(new ChatEventPro(), this);
-            Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Event Registered!");
-        }
+        parameters();
+        database();
+        Bukkit.getPluginManager().registerEvents(new ChatEventFree(), this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Enabled!");
     }
 
@@ -77,13 +146,4 @@ public class Translated extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Disabled!");
     }
 
-    public static void Please() throws IOException {
-        if(Translated.lastchar.equals(":fx")){
-            Bukkit.getPluginManager().callEvent(new Free());
-            Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Free Called!");
-        }else{
-            Bukkit.getPluginManager().callEvent(new Pro());
-            Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Pro Called!");
-        }
-    }
 }

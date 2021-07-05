@@ -8,17 +8,16 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.io.IOException;
 
-import static net.ureshi.translated.Translated.originaltext;
-import static net.ureshi.translated.Translated.translatedtext;
+import static net.ureshi.translated.Translated.originalText;
+import static net.ureshi.translated.Translated.translatedText;
 
 public class ChatEventPro implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerChat(AsyncPlayerChatEvent e) throws IOException {
-        originaltext = e.getMessage();
-        Translated.Please();
-        e.setMessage(translatedtext);
+        originalText = e.getMessage();
+        e.setMessage(translatedText);
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Chat Called!");
     }
 }

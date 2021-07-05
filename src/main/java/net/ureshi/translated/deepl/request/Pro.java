@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static net.ureshi.translated.Translated.translatedtext;
+import static net.ureshi.translated.Translated.translatedText;
 
 public class Pro extends Event {
 
@@ -28,7 +28,7 @@ public class Pro extends Event {
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + Translated.auth + "&" + Translated.originaltext + "&target_lang=DE";
+        String data = "auth_key=" + Translated.auth + "&" + Translated.originalText + "&target_lang=DE";
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -48,8 +48,8 @@ public class Pro extends Event {
             String[] arrSplit = response.toString().split(":");
             String temp1 = arrSplit[3];
             String temp2 = temp1.substring(0, temp1.length()-4);
-            translatedtext = temp2.replaceFirst("\"", "");
-            Bukkit.getConsoleSender().sendMessage(""+translatedtext);
+            translatedText = temp2.replaceFirst("\"", "");
+            Bukkit.getConsoleSender().sendMessage(""+translatedText);
             Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Pro Translate called!");
         }
 

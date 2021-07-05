@@ -6,25 +6,35 @@ options:
 
   #Sets whether the translation engine should first split the input into sentences, Enabled by default
   #Possible options: 0 - no splitting at all, whole input is treated as one sentence | 1 - (default) - splits on interpunction and on newlines | nonewlines - splits on interpunction only, ignoring newlines
-  splitsentences: "1"
+  splitsentences: 1
 
   #Sets whether the translation engine should respect the original formatting, even if it would usually correct some aspects
   #Possible options: 0 - (default) - Keeps format | 1 - (Recommended) - Changes format to be correct in incorrect
-  preserveformatting: "0"
+  preserveformatting: 0
+
+  #Sets the formality level for the following Languages: French, Italian, Spanish, Dutch, Polish, Portuguese and Russian
+  #Possible options: default - The default, does not change formality | 0 - less formal | 1 - more formal
+  formality: default
 
   #Choose to set a limit for how many characters can be translated per billing period, set to -1 to disable
   limiter:
 
-    limit: "-1"
+    limit: -1
 
   #Log chat in a set language. Can be helpful for searching on who said what, can take up space if not needed
   logchat:
 
-    #Possible options: True - Logs chat in the set language below | False - (default) - does not log chat
-    enabled: "False"
+    #Possible options: True - Logs chat in the origin language to console | False - (default) - does not log chat
+    enabled: False
 
-    #Sets the language to log chat in if enabled above. Possible options are shorthand languages here, under source_lang: https://www.deepl.com/docs-api/translating-text/request/
-    lang: "EN"
+#Determines what type of storage method to use
+#Possible options: file - (default) - uses a file to store all data on the server | mysql - uses a MySqlStorage database to store all data - If this option is enabled, please fill in the options below
+storage: file
 
+  host:
+  port:
+  database:
+  username:
+  password:
 
 
