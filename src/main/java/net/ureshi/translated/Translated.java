@@ -1,6 +1,10 @@
 package net.ureshi.translated;
 
 import net.ureshi.translated.ChatListener.ChatEventFree;
+import net.ureshi.translated.ChatListener.ChatEventPro;
+import net.ureshi.translated.Commands.Language;
+import net.ureshi.translated.Storage.MySqlStorage;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -32,7 +36,7 @@ public class Translated extends JavaPlugin {
     public static String database;
     public static String username;
     public static String password;
-
+    public static String lang;
 
     public void read() {
         auth = getCustomConfig().getString("authkey");
@@ -111,6 +115,21 @@ public class Translated extends JavaPlugin {
         }
     }
 
+    public void chat() {
+
+        if (lastChar.equals(":fx")) {
+            Bukkit.getPluginManager().registerEvents(new ChatEventFree(), this);
+        } else {
+            Bukkit.getPluginManager().registerEvents(new ChatEventPro(), this);
+        }
+    }
+
+    public void storage() {
+        if (storage.equals("database")) {
+            new MySqlStorage();
+        }
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -118,7 +137,9 @@ public class Translated extends JavaPlugin {
         read();
         parameters();
         database();
-        Bukkit.getPluginManager().registerEvents(new ChatEventFree(), this);
+        chat();
+        storage();
+        this.getCommand("language").setExecutor(new Language());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Enabled!");
     }
 
