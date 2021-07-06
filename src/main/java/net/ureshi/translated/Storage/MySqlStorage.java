@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
@@ -27,7 +28,7 @@ public class MySqlStorage {
         }
     }
 
-    private DataSource initMySQLDataSource() throws SQLException {
+    public DataSource initMySQLDataSource() throws SQLException {
         MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
         // set credentials
         dataSource.setServerName(host);
@@ -37,11 +38,11 @@ public class MySqlStorage {
         dataSource.setPassword(password);
 
 
-
-
+        testDataSource(dataSource);
+        return dataSource;
     }
 
-    private void initdb() throws SQLException, IOException {
+    public void initdb() throws SQLException, IOException {
         String setup;
         try (InputStream in = getClassLoader().getResourceAsStream("dbsetup.sql")) {
             setup = new String(in.readAllBytes());
@@ -50,7 +51,6 @@ public class MySqlStorage {
             throw e;
         }
     }
-
-
-
 }
+
+
