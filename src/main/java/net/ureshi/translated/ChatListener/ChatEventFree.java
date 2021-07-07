@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static net.ureshi.translated.Translated.*;
+import net.ureshi.translated.Translated;
 
 public class ChatEventFree implements Listener {
 
@@ -20,7 +21,9 @@ public class ChatEventFree implements Listener {
     @EventHandler
     public void PlayerChat(PlayerChatEvent e) throws IOException {
 
+        Free free = new Free();
         originalText = e.getMessage();
+        Bukkit.getScheduler().runTask(new Translated(), () -> Bukkit.getPluginManager().callEvent(free));
         Bukkit.getPluginManager().callEvent(new Free());
         byte[] temp1 = translatedText.getBytes(StandardCharsets.ISO_8859_1);
         String message = new String(temp1, StandardCharsets.UTF_8);

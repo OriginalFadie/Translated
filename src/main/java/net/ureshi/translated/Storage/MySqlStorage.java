@@ -53,7 +53,7 @@ public class MySqlStorage {
         String setup;
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("dbsetup.sql")) {
 
-
+            assert in != null;
             setup = new String(in.readAllBytes());
 
         } catch (IOException e) {
