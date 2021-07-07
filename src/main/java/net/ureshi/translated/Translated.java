@@ -2,9 +2,8 @@ package net.ureshi.translated;
 
 import net.ureshi.translated.ChatListener.ChatEventFree;
 import net.ureshi.translated.ChatListener.ChatEventPro;
-import net.ureshi.translated.Commands.Language;
+import net.ureshi.translated.Storage.FileStorage;
 import net.ureshi.translated.Storage.MySqlStorage;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -14,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Translated extends JavaPlugin {
 
@@ -38,24 +38,30 @@ public class Translated extends JavaPlugin {
     public static String password;
     public static String lang;
 
+    MySqlStorage sql = new MySqlStorage();
+
     public void read() {
         auth = getCustomConfig().getString("authkey");
-        ss = getCustomConfig().getString("options.splitsentences");
-        pf = getCustomConfig().getString("options.preserveformatting");
-        en = getCustomConfig().getString("options.logchat.enabled");
-        li = getCustomConfig().getString("options.limiter.limit");
-        fo = getCustomConfig().getString("options.formality");
-        lastChar = auth.substring(auth.length()-3);
-        storage = getCustomConfig().getString("options.storage");
+        ss = getCustomConfig().getString("splitsentences");
+        pf = getCustomConfig().getString("preserveformatting");
+        en = getCustomConfig().getString("logchat.enabled");
+        li = getCustomConfig().getString("limiter.limit");
+        fo = getCustomConfig().getString("formality");
+        if (auth == null) {
+            Bukkit.getConsoleSender().sendMessage("Don't forget to add your auth key! It is required for the plugin to work!");
+        }else {
+            lastChar = auth.substring(auth.length()-3);
+        }
+        storage = getCustomConfig().getString("storage");
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Read Event Called!");
     }
 
     public void database() {
-        host = getCustomConfig().getString("options.storage.host");
-        port = getCustomConfig().getString("options.storage.port");
-        database = getCustomConfig().getString("options.storage.database");
-        username = getCustomConfig().getString("options.storage.username");
-        password = getCustomConfig().getString("options.storage.password");
+        host = getCustomConfig().getString("host");
+        port = getCustomConfig().getString("port");
+        database = getCustomConfig().getString("database");
+        username = getCustomConfig().getString("username");
+        password = getCustomConfig().getString("password");
     }
 
 
@@ -124,9 +130,27 @@ public class Translated extends JavaPlugin {
         }
     }
 
+    public void db() {
+        try {
+            sql.initDb();
+            Bukkit.getConsoleSender().sendMessage("db() called!");
+        } catch (SQLException | IOException throwables) {
+            throwables.printStackTrace();
+        }
+    }
     public void storage() {
-        if (storage.equals("database")) {
-            new MySqlStorage();
+        if (storage.equals("mysql")) {
+            try {
+                sql.initMySQLDataSource();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            db();
+        }else if(storage.equals("file")) {
+            new FileStorage();
+        }else {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Storage formatting error, reverting to file storage");
+            new FileStorage();
         }
     }
 
@@ -139,7 +163,6 @@ public class Translated extends JavaPlugin {
         database();
         chat();
         storage();
-        this.getCommand("language").setExecutor(new Language());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Enabled!");
     }
 

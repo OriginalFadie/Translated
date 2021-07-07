@@ -22,9 +22,10 @@ public class Language implements CommandExecutor {
                     lang = "en";
                     break;
 
-                case ""
+                case "":
+
             }
         }
-        return false;
+        return true;
     }
 }

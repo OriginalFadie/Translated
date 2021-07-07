@@ -27,7 +27,7 @@ public class Free extends Event {
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=JA" + format + split + format;
+        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=DA" + format + split + format;
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
