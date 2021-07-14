@@ -1,5 +1,6 @@
 package net.ureshi.translated.deepl.request;
 
+import net.ureshi.translated.Translated;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import static net.ureshi.translated.Translated.*;
+import static net.ureshi.translated.ChatListener.ChatEventFree.uuid;
 
 public class Free extends Event {
 
@@ -27,7 +29,10 @@ public class Free extends Event {
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=DA" + format + split + format;
+
+        String lang = Translated.getInstance().getConfig().getString("path." + uuid + ".lang");
+        //Constructs the URL to be as the user desires
+        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=" + lang + format + split + format;
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -39,12 +44,13 @@ public class Free extends Event {
             StringBuilder response = new StringBuilder();
 
             for(String line; (line = in.readLine()) != null; ) {
-                // process the line.
+                // process the line
                 if(line.contains("text")){
                     response.append(line);
                 }
             }
 
+            //Extracts only the text that the user sent, but translated
             String[] arrSplit = response.toString().split(":");
             String temp1 = arrSplit[3];
             String temp2 = temp1.substring(0, temp1.length()-4);

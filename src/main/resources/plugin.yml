@@ -2,3 +2,7 @@ name: Translated
 version: ${project.version}
 main: net.ureshi.translated.Translated
 api-version: 1.16
+commands:
+  lang:
+    description: Used to set the language you recieve and type chat in
+    usage: /<command>

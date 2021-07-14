@@ -23,13 +23,3 @@ logchat:
 
   #Possible options: True - Logs chat in the origin language to console | False - (default) - does not log chat
   enabled: "False"
-
-#Determines what type of storage method to use
-#Possible options: file - (default) - uses a file to store all data on the server | mysql - uses a MySqlStorage database to store all data - If this option is enabled, please fill in the options below
-storage:  "file"
-
-host: ""
-port: ""
-database: ""
-username: ""
-password: ""

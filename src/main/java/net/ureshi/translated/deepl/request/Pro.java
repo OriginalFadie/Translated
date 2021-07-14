@@ -20,13 +20,14 @@ public class Pro extends Event {
 
 
     public Pro() throws IOException {
-        //Creates a URL connection to the free DeepL api
+        //Creates a URL connection to the Professional DeepL api
         URL url = new URL("https://api.deepl.com/v2/translate");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
         http.setRequestMethod("POST");
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
+        //Constructs the URL to be as the user desires
         String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=JA" + format + split + format;
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
@@ -45,6 +46,7 @@ public class Pro extends Event {
                 }
             }
 
+            //Extracts only the text that the user sent, but translated
             String[] arrSplit = response.toString().split(":");
             String temp1 = arrSplit[3];
             String temp2 = temp1.substring(0, temp1.length()-4);

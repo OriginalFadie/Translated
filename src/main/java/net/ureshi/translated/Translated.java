@@ -1,22 +1,25 @@
 package net.ureshi.translated;
 
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.ureshi.translated.ChatListener.ChatEventFree;
 import net.ureshi.translated.ChatListener.ChatEventPro;
-import net.ureshi.translated.Storage.FileStorage;
-import net.ureshi.translated.Storage.MySqlStorage;
+import net.ureshi.translated.Commands.Language;
+import net.ureshi.translated.PlayerProfile.JoinEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class Translated extends JavaPlugin {
 
+    private static Translated instance;
+    private BukkitAudiences adventure;
     private FileConfiguration customConfig;
     public static String lastChar;
     public static String auth;
@@ -38,8 +41,7 @@ public class Translated extends JavaPlugin {
     public static String password;
     public static String lang;
 
-    MySqlStorage sql = new MySqlStorage();
-
+    //Sets Variables to the set values in the config file
     public void read() {
         auth = getCustomConfig().getString("authkey");
         ss = getCustomConfig().getString("splitsentences");
@@ -56,6 +58,7 @@ public class Translated extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Read Event Called!");
     }
 
+    //Sets Database Values to the set Values in the config file
     public void database() {
         host = getCustomConfig().getString("host");
         port = getCustomConfig().getString("port");
@@ -64,7 +67,7 @@ public class Translated extends JavaPlugin {
         password = getCustomConfig().getString("password");
     }
 
-
+    //Sets the variables for the url building in the Free and Pro files
     public void parameters() {
 
         switch (ss) {
@@ -121,6 +124,7 @@ public class Translated extends JavaPlugin {
         }
     }
 
+    //Selects the Chat Listener to call
     public void chat() {
 
         if (lastChar.equals(":fx")) {
@@ -130,44 +134,33 @@ public class Translated extends JavaPlugin {
         }
     }
 
-    public void db() {
-        try {
-            sql.initDb();
-            Bukkit.getConsoleSender().sendMessage("db() called!");
-        } catch (SQLException | IOException throwables) {
-            throwables.printStackTrace();
+    public @NonNull BukkitAudiences adventure() {
+        if(this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
         }
-    }
-    public void storage() {
-        if (storage.equals("mysql")) {
-            try {
-                sql.initMySQLDataSource();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-            db();
-        }else if(storage.equals("file")) {
-            new FileStorage();
-        }else {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Storage formatting error, reverting to file storage");
-            new FileStorage();
-        }
+        return this.adventure;
     }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        this.adventure = BukkitAudiences.create(this);
+        instance = this;
+        this.saveDefaultConfig();
         createCustomConfig();
         read();
         parameters();
         database();
         chat();
-        storage();
+        getCommand("lang").setExecutor(new Language());
+        Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Enabled!");
     }
 
+
     public FileConfiguration getCustomConfig() { return this.customConfig; }
 
+    //Creates Custom Configuration File
     private void createCustomConfig() {
         File customConfigFile = new File(getDataFolder(), "settings.yml");
         if (!customConfigFile.exists()) {
@@ -183,10 +176,17 @@ public class Translated extends JavaPlugin {
         }
     }
 
+    public static Translated getInstance() {
+        return instance;
+    }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        if(this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
+        }
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Disabled!");
     }
 
