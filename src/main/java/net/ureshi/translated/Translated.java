@@ -11,7 +11,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -134,17 +133,9 @@ public class Translated extends JavaPlugin {
         }
     }
 
-    public @NonNull BukkitAudiences adventure() {
-        if(this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
-    }
-
     @Override
     public void onEnable() {
         // Plugin startup logic
-        this.adventure = BukkitAudiences.create(this);
         instance = this;
         this.saveDefaultConfig();
         createCustomConfig();
@@ -183,10 +174,6 @@ public class Translated extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        if(this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
-        }
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Translation Disabled!");
     }
 

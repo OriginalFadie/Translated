@@ -1,10 +1,5 @@
 package net.ureshi.translated.deepl.request;
 
-import net.ureshi.translated.Translated;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,12 +9,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 import static net.ureshi.translated.Translated.*;
-import static net.ureshi.translated.ChatListener.ChatEventFree.uuid;
 
-public class Free extends Event {
-
-    private static final HandlerList HANDLERS = new HandlerList();
-
+public class Free {
 
     public Free() throws IOException {
         //Creates a URL connection to the free DeepL api
@@ -29,10 +20,8 @@ public class Free extends Event {
         http.setDoOutput(true);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-
-        String lang = Translated.getInstance().getConfig().getString("path." + uuid + ".lang");
         //Constructs the URL to be as the user desires
-        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=" + lang + format + split + format;
+        String data = "auth_key=" + auth + "&text=" + originalText + "&target_lang=DA" + format + split + format;
 
         byte[] out = data.getBytes(StandardCharsets.UTF_8);
 
@@ -64,8 +53,4 @@ public class Free extends Event {
 
     }
 
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return HANDLERS;
-    }
 }

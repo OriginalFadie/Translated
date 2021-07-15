@@ -1,11 +1,11 @@
 package net.ureshi.translated.ChatListener;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.ureshi.translated.deepl.request.Free;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,12 +18,12 @@ public class ChatEventFree implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void PlayerChat(PlayerChatEvent e) throws IOException {
+    public void PlayerChat(AsyncChatEvent e) throws IOException {
 
         originalText = e.getMessage();
         uuid = e.getPlayer().getUniqueId().toString();
 
-        Bukkit.getPluginManager().callEvent(new Free());
+        new Free();
 
         byte[] temp1 = translatedText.getBytes(StandardCharsets.ISO_8859_1);
         String message = new String(temp1, StandardCharsets.UTF_8);
