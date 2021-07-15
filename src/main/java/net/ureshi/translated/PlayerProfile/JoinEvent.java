@@ -1,5 +1,6 @@
 package net.ureshi.translated.PlayerProfile;
 
+import net.kyori.adventure.identity.Identity;
 import net.ureshi.translated.Translated;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -9,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-
 
 
 public class JoinEvent implements Listener {
@@ -40,6 +40,8 @@ public class JoinEvent implements Listener {
         if (container.has(key, PersistentDataType.STRING)) {
             Bukkit.getConsoleSender().sendMessage("The player's Key is: " + container.get(key, PersistentDataType.STRING));
         }
+        p.get(Identity.UUID);
+
 
 
     }
